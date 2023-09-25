@@ -20,13 +20,14 @@ const mongoose = require('mongoose');
 
 const __dirname1 = path.resolve();
 
-if ("production") {
+if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname1, "/frontend/build")));
 
   app.get("*", (req, res) =>
     res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"))
   );
 } else {
+  
   app.get("/", (req, res) => {
     res.send("API is running..");
   });
@@ -36,7 +37,7 @@ if ("production") {
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect("mongodb+srv://obama00300:Hwo97I6a2CLoNtDV@cluster0.e91ugk4.mongodb.net/?retryWrites=true&w=majority", {
+    const conn = await mongoose.connect(process.env.DB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
